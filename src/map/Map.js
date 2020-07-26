@@ -19,11 +19,12 @@ class OneMap extends React.Component {
     state = {
         results: [],
         popupdata: null,
-        term: 'primary',
+        query: 'primary',
+        term: '',
         DisplayIcon: null,
         search: '',
     }
-    FetchApi=(query)=>{
+    FetchApi = (query) => {
         fetch(`https://developers.onemap.sg/commonapi/search?searchVal=${query}&returnGeom=Y&getAddrDetails=Y`)
             .then(res => res.json())
             .then(result => {
@@ -32,24 +33,22 @@ class OneMap extends React.Component {
             })
     }
 
-    onChange=(e)=>{
-        const {value }= e.target 
+    hanlesubmit = (e) => {
+        e.preventDefault();
         this.setState({
-            query:value
+            term: this.state.query
         })
-        this.FetchApi(value)
+        this.FetchApi(this.state.term)
     }
+
+
     componentDidMount() {
         this.FetchApi("School")
     }
 
-    
+
     render() {
-       const hanlesubmit = (e) => {
-            e.preventDefault();
-            this.setState({ term: "Hospital" })
-            console.log(this.state.term)
-        }
+
         const langitude = this.props.coords ? this.props.coords.langitude : DEFAULT_LONGITUDE;
         const latitude = this.props.coords ? this.props.coords.latitude : DEFAULT_LATITUDE;
         return (
@@ -83,8 +82,10 @@ class OneMap extends React.Component {
                         }
                     </Map>
                 </div>
-                <input type="text"  onChange={this.onChange} />
-                <button onClick={hanlesubmit}>Search</button>
+                <form onSubmit={this.hanlesubmit}>
+                    <input className="search-box" type="text" max="5" onChange={(e) => this.setState({ term: e.target.value })} required />
+                    <input className="btn" type="submit" value="Search" />
+                </form>
             </div>
         )
     }
