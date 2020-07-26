@@ -107,7 +107,7 @@ export default function OneMap() {
                                 onClose={() => setPopupData(null)}
                             >
                                 <div>
-                                    <h1>{popupdata.BUILDING}</h1>
+                                    <h4>{popupdata.BUILDING}</h4>
                                     <p>{popupdata.ADDRESS}</p>
                                 </div>
                             </Popup>
